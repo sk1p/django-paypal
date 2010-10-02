@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 # List taken from the Paypal documentation
 COUNTRIES = (
     ('AF', _('Afghanistan')),
-    ('AX', _('ÅLand Islands')),
+    ('AX', _(u'Åland Islands')),
     ('AL', _('Albania')),
     ('DZ', _('Algeria')),
     ('AS', _('American Samoa')),
