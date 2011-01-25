@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import codecs
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -22,6 +23,13 @@ def ipn(request, item_check_callable=None):
     #      of if checks just to determine if flag is set.
     flag = None
     ipn_obj = None
+
+    encoding = request.POST.get('charset', '')
+    try:
+        codecs.getdecoder(encoding) # check if the codec exists
+        request.encoding = encoding
+    except LookupError:
+        pass
     
     # Clean up the data as PayPal sends some weird values such as "N/A"
     data = request.POST.copy()
