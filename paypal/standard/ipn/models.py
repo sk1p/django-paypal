@@ -20,7 +20,7 @@ class PayPalIPN(PayPalStandardBase):
     def _postback(self):
         """Perform PayPal Postback validation."""
         rc = urllib2.urlopen(self.get_endpoint(), "cmd=_notify-validate&%s" % self.query).read()
-        log.info("querying IPN: %s\nReturn Code was %s" (self.query, rc))
+        log.info("querying IPN: %s\nReturn Code was %s" % (self.query, rc))
         return rc
 
     def _verify_postback(self):
