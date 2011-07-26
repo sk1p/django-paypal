@@ -242,7 +242,7 @@ class PayPalStandardBase(Model):
         self._verify_postback()  
         if not self.flag:
             if self.is_transaction():
-                if self.payment_status not in self.PAYMENT_STATUS_CHOICES:
+                if self.payment_status != u'Completed':
                     self.set_flag("Invalid payment_status. (%s)" % self.payment_status)
                 if duplicate_txn_id(self):
                     self.set_flag("Duplicate txn_id. (%s)" % self.txn_id)
