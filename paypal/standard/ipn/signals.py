@@ -31,3 +31,5 @@ recurring_create = Signal()
 recurring_payment = Signal()
 
 recurring_cancel = Signal()
+
+ipn_was_not_recognized = Signal()

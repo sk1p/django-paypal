@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from paypal.standard.ipn.forms import PayPalIPNForm
 from paypal.standard.ipn.models import PayPalIPN
+from paypal.standard.ipn.signals import ipn_was_not_recognized
  
  
 @require_POST
@@ -58,6 +59,7 @@ def ipn(request, item_check_callable=None):
     if flag is not None:
         #We save errors in the flag field
         ipn_obj.set_flag(flag)
+        ipn_was_not_recognized.send(ipn_obj)
     else:
         # Secrets should only be used over SSL.
         if request.is_secure() and 'secret' in request.GET:
