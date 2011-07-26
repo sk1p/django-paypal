@@ -4,6 +4,10 @@ import urllib2
 from paypal.standard.models import PayPalStandardBase
 from paypal.standard.ipn.signals import *
 
+import logging
+
+log = logging.getLogger(__name__)
+
 
 class PayPalIPN(PayPalStandardBase):
     """Logs PayPal IPN interactions."""
@@ -15,8 +19,10 @@ class PayPalIPN(PayPalStandardBase):
 
     def _postback(self):
         """Perform PayPal Postback validation."""
-        return urllib2.urlopen(self.get_endpoint(), "cmd=_notify-validate&%s" % self.query).read()
-    
+        rc = urllib2.urlopen(self.get_endpoint(), "cmd=_notify-validate&%s" % self.query).read()
+        log.info("querying IPN: %s\nReturn Code was %s" % (self.query, rc))
+        return rc
+
     def _verify_postback(self):
         if self.response != "VERIFIED":
             self.set_flag("Invalid postback. (%s)" % self.response)

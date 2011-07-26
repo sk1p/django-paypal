@@ -8,6 +8,8 @@ from paypal.standard.ipn.forms import PayPalIPNForm
 from paypal.standard.ipn.models import PayPalIPN
 from paypal.standard.ipn.signals import ipn_was_not_recognized
  
+import logging
+log = logging.getLogger(__name__)
  
 @require_POST
 @csrf_exempt
@@ -20,6 +22,8 @@ def ipn(request, item_check_callable=None):
     PayPal IPN Simulator:
     https://developer.paypal.com/cgi-bin/devscr?cmd=_ipn-link-session
     """
+    log.info("something hit the ipn endpoint")
+    log.info("request: %s" % request)
     #TODO: Clean up code so that we don't need to set None here and have a lot
     #      of if checks just to determine if flag is set.
     flag = None
