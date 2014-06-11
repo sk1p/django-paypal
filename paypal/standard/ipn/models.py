@@ -19,7 +19,8 @@ class PayPalIPN(PayPalStandardBase):
 
     def _postback(self):
         """Perform PayPal Postback validation."""
-        rc = urllib2.urlopen(self.get_endpoint(), "cmd=_notify-validate&%s" % self.query).read()
+        request = urllib2.Request(self.get_endpoint(), "cmd=_notify-validate&%s" % self.query)
+        rc = urllib2.urlopen(request, timeout=30).read()
         log.info("querying IPN: %s\nReturn Code was %s" % (self.query, rc))
         return rc
 
@@ -53,4 +54,4 @@ class PayPalIPN(PayPalStandardBase):
             elif self.is_subscription_end_of_term():
                 subscription_eot.send(sender=self)
             elif self.is_subscription_modified():
-                subscription_modify.send(sender=self)            
+                subscription_modify.send(sender=self)
